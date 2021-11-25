@@ -34,6 +34,4 @@ public class GameApi {
     public GameDto startGame(@PathVariable("name") String gameName, Principal principal) {
         return gameApplicationService.startGame(gameName, principal.getName());
     }
-
-
 }
