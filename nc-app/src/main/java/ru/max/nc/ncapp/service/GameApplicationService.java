@@ -2,6 +2,8 @@ package ru.max.nc.ncapp.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.max.nc.ncapp.api.dto.GameDto;
@@ -10,11 +12,17 @@ import ru.max.nc.ncapp.data.GameConverter;
 import ru.max.nc.ncapp.data.GameRepository;
 import ru.max.nc.ncapp.service.validation.GameOperationsValidator;
 
+import javax.persistence.OptimisticLockException;
+
 import static ru.max.nc.ncapp.api.dto.GameDto.Status.IN_PROGRESS;
 
 @Slf4j
 @Service
 @Transactional
+@Retryable(value = OptimisticLockException.class,
+        maxAttempts = 2,
+        backoff = @Backoff(100)
+)
 @RequiredArgsConstructor
 public class GameApplicationService {
 
@@ -28,6 +36,13 @@ public class GameApplicationService {
                 .withCreatedBy(username));
     }
 
+    /**
+     * It's possible that OptimisticLockException would be thrown here
+     * because two different users could concurrently join the game
+     * and a user whose transaction finishes last would rewrite 'secondPlayer' column
+     *
+     * That's why we need
+     */
     public GameDto joinGame(String gameName, String username) {
         Game game = gameRepository.getByNameOrThrow(gameName);
         operationsValidator.validateJoin(game, username);

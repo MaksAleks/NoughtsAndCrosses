@@ -39,8 +39,8 @@ public class GameTestDataFactory {
     public static Move.MoveBuilder aNewMove(Game game, MoveDto dto) {
         return Move.builder()
                 .game(game)
-                .xPos(dto.getXPos())
-                .yPos(dto.getYPos())
+                .posX(dto.getXPos())
+                .posY(dto.getYPos())
                 .userName(dto.getUserName());
     }
 

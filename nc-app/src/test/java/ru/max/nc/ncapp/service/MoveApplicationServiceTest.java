@@ -68,7 +68,7 @@ class MoveApplicationServiceTest {
                 .thenReturn(move);
         when(gameRepository.getByNameOrThrow(DEFAULT_GAME_NAME))
                 .thenReturn(exisingGameInProgress);
-        when(moveRepository.findByGameAndXPosAndYPos(
+        when(moveRepository.findByGameAndPosXAndPosY(
                 exisingGameInProgress, moveDto.getXPos(), moveDto.getYPos())
         ).thenReturn(Optional.empty());
 
@@ -110,7 +110,7 @@ class MoveApplicationServiceTest {
                 .thenReturn(lastMove);
         when(gameRepository.getByNameOrThrow(DEFAULT_GAME_NAME))
                 .thenReturn(lastMoveGame);
-        when(moveRepository.findByGameAndXPosAndYPos(
+        when(moveRepository.findByGameAndPosXAndPosY(
                 lastMoveGame, moveDto.getXPos(), moveDto.getYPos())
         ).thenReturn(Optional.empty());
 

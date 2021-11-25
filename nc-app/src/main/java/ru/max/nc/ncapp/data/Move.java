@@ -25,11 +25,11 @@ public class Move {
 
     @NotNull
     @Column(name = "x_pos", updatable = false)
-    private int xPos;
+    private int posX;
 
     @NotNull
     @Column(name = "y_pos", updatable = false)
-    private int yPos;
+    private int posY;
 
     @CreatedDate
     @Column(name = "created_time", updatable = false)

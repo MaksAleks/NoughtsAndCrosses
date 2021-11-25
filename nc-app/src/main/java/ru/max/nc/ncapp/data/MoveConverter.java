@@ -8,16 +8,16 @@ public class MoveConverter {
 
     public Move convertFromDto(MoveDto dto) {
         return Move.builder()
-                .xPos(dto.getXPos())
-                .yPos(dto.getYPos())
+                .posX(dto.getXPos())
+                .posY(dto.getYPos())
                 .userName(dto.getUserName())
                 .build();
     }
 
     public MoveDto convertToDto(Move move) {
         return MoveDto.builder()
-                .xPos(move.getXPos())
-                .yPos(move.getYPos())
+                .xPos(move.getPosX())
+                .yPos(move.getPosY())
                 .userName(move.getUserName())
                 .gameName(move.getGame().getName())
                 .build();

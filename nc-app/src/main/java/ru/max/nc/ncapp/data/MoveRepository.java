@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface MoveRepository extends JpaRepository<Move, UUID>, JpaSpecificationExecutor<Move> {
 
-    Optional<Move> findByGameAndXPosAndYPos(Game game, int xPos, int yPos);
+    Optional<Move> findByGameAndPosXAndPosY(Game game, int xPos, int yPos);
 
     List<Move> findByGame(Game game);
 }

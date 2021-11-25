@@ -1,6 +1,8 @@
 package ru.max.nc.ncapp.service.validation;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ru.max.nc.ncapp.api.dto.GameDto;
@@ -10,6 +12,7 @@ import ru.max.nc.ncapp.data.GameRepository;
 import ru.max.nc.ncapp.data.MoveRepository;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.OptimisticLockException;
 
 import static ru.max.nc.ncapp.api.dto.GameDto.Status.IN_PROGRESS;
 import static ru.max.nc.ncapp.api.dto.GameDto.Status.NEW;
@@ -56,7 +59,7 @@ public class GameOperationsValidator {
                 moveDto.getYPos() > game.getFieldSize()) {
             throw new IllegalArgumentException("Move position is beyond the game field size = " + game.getFieldSize());
         }
-        moveRepository.findByGameAndXPosAndYPos(game, moveDto.getXPos(), moveDto.getYPos())
+        moveRepository.findByGameAndPosXAndPosY(game, moveDto.getXPos(), moveDto.getYPos())
                 .ifPresent(move -> {
                     throw new IllegalStateException(
                             String.format("Move with position (%s, %s) was already done by %s",

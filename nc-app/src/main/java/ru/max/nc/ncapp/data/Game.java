@@ -6,7 +6,6 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 import static ru.max.nc.ncapp.api.dto.GameDto.Status;
 
@@ -41,6 +40,9 @@ public class Game  {
     private String nextMove;
 
     private long leftMovesCount;
+
+    @Version
+    private long version;
 
     @Enumerated(EnumType.STRING)
     private Status status;

@@ -14,6 +14,8 @@ create table game(
      second_player varchar(50) null ,
      next_move varchar(50) not null check ( next_move = created_by OR next_move = second_player ),
      status varchar(10) not null,
+     left_moves_count bigint not null check ( left_moves_count >= 0 ),
+     version bigint default 0,
      field_size int not null check ( field_size >= 3 )
 );
 create table move(
