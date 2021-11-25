@@ -14,14 +14,15 @@ create table game(
      second_player varchar(50) null ,
      next_move varchar(50) not null check ( next_move = created_by OR next_move = second_player ),
      status varchar(10) not null,
-     field_size int not null,
-     constraint fk_game_created_by foreign key(created_by) references users(username)
+     field_size int not null check ( field_size >= 3 )
 );
 create table move(
     id uuid default uuid_generate_v4 () not null primary key,
     x_pos int not null check ( x_pos > 0 ),
     y_pos int not null check ( y_pos > 0),
     game_name varchar(50) not null ,
+    user_name varchar(50) not null ,
     created_time timestamp not null ,
-    constraint fk_move_game_name foreign key (game_name) references game(name)
+    constraint fk_move_game_name foreign key (game_name) references game(name),
+    constraint move_pos_for_game_unq unique (x_pos, y_pos, game_name)
 )

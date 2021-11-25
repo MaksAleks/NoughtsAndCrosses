@@ -16,11 +16,15 @@ import java.time.Instant;
 public class MoveDto {
     @NotNull
     @Schema(description = "position on game field by x axe")
-    int x;
+    int xPos;
     @NotNull
     @Schema(description = "position on game field by y axe")
-    int y;
+    int yPos;
     @NotNull
     @Schema(description = "game name")
     String gameName;
+    @Schema(description = "Name of the user who made the move")
+    String userName;
+    @NotNull
+    Instant createdTime;
 }

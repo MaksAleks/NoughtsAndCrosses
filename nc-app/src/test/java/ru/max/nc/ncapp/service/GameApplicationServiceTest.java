@@ -10,6 +10,7 @@ import ru.max.nc.ncapp.api.dto.GameDto;
 import ru.max.nc.ncapp.data.Game;
 import ru.max.nc.ncapp.data.GameConverter;
 import ru.max.nc.ncapp.data.GameRepository;
+import ru.max.nc.ncapp.data.MoveRepository;
 import ru.max.nc.ncapp.service.validation.GameOperationsValidator;
 
 import java.util.Optional;
@@ -31,11 +32,13 @@ class GameApplicationServiceTest {
     GameConverter gameConverter;
     @Mock
     GameRepository gameRepository;
+    @Mock
+    MoveRepository moveRepository;
 
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        operationsValidator = spy(new GameOperationsValidator(gameRepository));
+        operationsValidator = spy(new GameOperationsValidator(gameRepository, moveRepository));
         gameApplicationService = new GameApplicationService(
                 operationsValidator,
                 gameRepository,

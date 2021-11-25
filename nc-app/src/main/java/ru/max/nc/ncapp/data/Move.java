@@ -25,13 +25,24 @@ public class Move {
 
     @NotNull
     @Column(name = "x_pos", updatable = false)
-    private int x;
+    private int xPos;
 
     @NotNull
     @Column(name = "y_pos", updatable = false)
-    private int y;
+    private int yPos;
 
     @CreatedDate
     @Column(name = "created_time", updatable = false)
     private Instant createdTime;
+
+    @NotNull
+    @Column(name = "user_name", updatable = false)
+    private String userName;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(
+            name = "game_name",
+            referencedColumnName = "name"
+    )
+    private Game game;
 }

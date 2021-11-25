@@ -1,16 +1,14 @@
 package ru.max.nc.ncapp.data;
 
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import ru.max.nc.ncapp.api.dto.GameDto;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.Instant;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-import static ru.max.nc.ncapp.api.dto.GameDto.*;
+import static ru.max.nc.ncapp.api.dto.GameDto.Status;
 
 @Entity
 @Getter
@@ -28,6 +26,7 @@ public class Game  {
     private UUID id;
 
     @NotNull
+    @NaturalId
     @Column(name = "name", updatable = false, unique = true)
     private String name;
 
@@ -37,10 +36,40 @@ public class Game  {
 
     private String secondPlayer;
 
+    @NotNull
+    @Setter
+    private String nextMove;
+
+    private long leftMovesCount;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
     @NotNull
     @Column(name = "field_size", updatable = false)
     private int fieldSize;
+
+    @PrePersist
+    public void prePersist() {
+        nextMove = createdBy;
+        leftMovesCount = (long) fieldSize * fieldSize;
+    }
+
+    public Game decrementLeftMovesCount() {
+        if (Status.FINISHED.equals(status)) {
+            throw new IllegalArgumentException("Game is already finished");
+        }
+        if (--leftMovesCount <= 0) {
+            status = Status.FINISHED;
+        }
+        return this;
+    }
+
+    public boolean isFinished() {
+        return status.equals(Status.FINISHED);
+    }
+
+    public boolean isNotFinished() {
+        return !isFinished();
+    }
 }

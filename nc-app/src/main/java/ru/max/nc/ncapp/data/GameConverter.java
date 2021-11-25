@@ -14,6 +14,7 @@ public class GameConverter {
                 .name(entity.getName())
                 .createdBy(entity.getCreatedBy())
                 .fieldSize(entity.getFieldSize())
+                .nextMove(entity.getNextMove())
                 .build();
     }
 
@@ -24,6 +25,8 @@ public class GameConverter {
                 .secondPlayer(dto.getSecondPlayer())
                 .fieldSize(dto.getFieldSize())
                 .createdBy(dto.getCreatedBy())
+                .nextMove(dto.getNextMove())
+                .leftMovesCount(dto.getLeftMovesCount())
                 .id(dto.getId())
                 .build();
     }
