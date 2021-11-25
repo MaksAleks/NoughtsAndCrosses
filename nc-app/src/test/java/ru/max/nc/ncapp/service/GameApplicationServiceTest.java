@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+import static ru.max.nc.ncapp.api.dto.GameDto.Status.IN_PROGRESS;
 import static ru.max.nc.ncapp.service.GameTestDataFactory.*;
 
 class GameApplicationServiceTest {
@@ -101,6 +102,38 @@ class GameApplicationServiceTest {
                     .isEqualTo(withSecondPlayer.getFieldSize());
             assertThat(created.getCreatedBy())
                     .isEqualTo(withSecondPlayer.getCreatedBy());
+        });
+    }
+
+    @Test
+    @DisplayName("Creator should be able to start an existing game if game is not started yet")
+    public void shouldStartGame() {
+        //given
+        String secondPlayer = "secondPlayer";
+        var newExistingGame = aNewDefaultGame()
+                .id(UUID.randomUUID())
+                .secondPlayer(secondPlayer)
+                .build();
+
+        Game inProgressGame = newExistingGame.withStatus(IN_PROGRESS);
+        when(gameRepository.getByNameOrThrow(DEFAULT_GAME_NAME))
+                .thenReturn(newExistingGame);
+        when(gameRepository.save(eq(inProgressGame)))
+                .thenReturn(inProgressGame);
+
+        //when
+        GameDto startedGame = gameApplicationService.startGame(DEFAULT_GAME_NAME, DEFAULT_USER);
+
+        //then
+        assertThat(startedGame).satisfies(started -> {
+            assertThat(started.getId())
+                    .isEqualTo(inProgressGame.getId());
+            assertThat(started.getName())
+                    .isEqualTo(inProgressGame.getName());
+            assertThat(started.getFieldSize())
+                    .isEqualTo(inProgressGame.getFieldSize());
+            assertThat(started.getCreatedBy())
+                    .isEqualTo(inProgressGame.getCreatedBy());
         });
     }
 }

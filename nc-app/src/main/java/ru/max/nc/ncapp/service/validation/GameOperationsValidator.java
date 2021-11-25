@@ -30,6 +30,20 @@ public class GameOperationsValidator {
     }
 
     public void validateJoin(Game game, String username) {
+        validateGameStarted(game);
+    }
+
+    public void validateStart(Game game, String username) {
+        validateGameStarted(game);
+        if (!game.getCreatedBy().equals(username)) {
+            throw new IllegalStateException("Game can be started only by creator");
+        }
+        if (!StringUtils.hasText(game.getSecondPlayer())) {
+            throw new IllegalStateException("Can't start game without a second player");
+        }
+    }
+
+    private void validateGameStarted(Game game) {
         if (IN_PROGRESS.equals(game.getStatus())) {
             throw new IllegalStateException(
                     String.format("Game %s is already started", game.getName())

@@ -30,4 +30,10 @@ public class GameApi {
         return gameApplicationService.joinGame(gameName, principal.getName());
     }
 
+    @PostMapping("/start/{name}")
+    public GameDto startGame(@PathVariable("name") String gameName, Principal principal) {
+        return gameApplicationService.startGame(gameName, principal.getName());
+    }
+
+
 }
