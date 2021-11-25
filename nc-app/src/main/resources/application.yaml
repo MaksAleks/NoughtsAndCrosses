@@ -13,5 +13,18 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL95Dialect
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    database:
+      url: jdbc:postgresql://${DB_ADDR:localhost}:5432/${SESSION_DB:session-db}
+      username: ${SESSION_DB_USER:postgres}
+      password: ${SESSION_DB_PASSWORD:postgres}
+      driverClassName: org.postgresql.Driver
+
 server:
-  port: 8080
+  port: 8081
+logging:
+  level:
+    org.springframework.*: debug
