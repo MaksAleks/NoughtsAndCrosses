@@ -8,6 +8,9 @@ import ru.max.nc.ncapp.api.dto.MoveDto;
 import ru.max.nc.ncapp.data.*;
 import ru.max.nc.ncapp.service.validation.GameOperationsValidator;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -38,5 +41,12 @@ public class MoveApplicationService {
         } else {
             return game.getSecondPlayer();
         }
+    }
+
+    public List<MoveDto> getMovesForGame(String gameName) {
+        Game game = gameRepository.getByNameOrThrow(gameName);
+        return moveRepository.findByGame(game).stream()
+                .map(moveConverter::convertToDto)
+                .collect(Collectors.toList());
     }
 }

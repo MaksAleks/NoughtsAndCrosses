@@ -8,6 +8,7 @@ import ru.max.nc.ncapp.service.MoveApplicationService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @Validated
 @RestController
@@ -20,5 +21,10 @@ public class MoveApi {
     @PostMapping
     public void makeAMove(@Valid @RequestBody MoveDto moveDto, Principal principal) {
         moveApplicationService.makeAMove(moveDto, principal.getName());
+    }
+
+    @GetMapping("/{gameName}")
+    public List<MoveDto> getMovesForGame(@PathVariable("gameName") String gameName) {
+        return moveApplicationService.getMovesForGame(gameName);
     }
 }

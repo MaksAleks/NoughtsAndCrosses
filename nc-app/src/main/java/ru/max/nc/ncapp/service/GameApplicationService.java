@@ -14,6 +14,9 @@ import ru.max.nc.ncapp.service.validation.GameOperationsValidator;
 
 import javax.persistence.OptimisticLockException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static ru.max.nc.ncapp.api.dto.GameDto.Status.IN_PROGRESS;
 
 @Slf4j
@@ -57,6 +60,24 @@ public class GameApplicationService {
 
     private GameDto update(Game game) {
         return converter.convertToDto(gameRepository.save(game));
+    }
+
+    public GameDto getGame(String gameName) {
+        return converter.convertToDto(gameRepository.getByNameOrThrow(gameName));
+    }
+
+
+    public List<GameDto> getGameByUser(String username) {
+        return gameRepository.getByCreatedBy(username)
+                .stream()
+                .map(converter::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<GameDto> getAllGames() {
+        return gameRepository.findAll().stream()
+                .map(converter::convertToDto)
+                .collect(Collectors.toList());
     }
 }
 

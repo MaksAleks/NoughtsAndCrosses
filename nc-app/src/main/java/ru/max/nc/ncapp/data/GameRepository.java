@@ -3,6 +3,7 @@ package ru.max.nc.ncapp.data;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,4 +15,6 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
                 String.format("Game %s not does not exist", name)
         ));
     }
+
+    List<Game> getByCreatedBy(String username);
 }

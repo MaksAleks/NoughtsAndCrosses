@@ -9,6 +9,7 @@ import ru.max.nc.ncapp.service.GameApplicationService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @Validated
 @RestController
@@ -33,5 +34,20 @@ public class GameApi {
     @PostMapping("/start/{name}")
     public GameDto startGame(@PathVariable("name") String gameName, Principal principal) {
         return gameApplicationService.startGame(gameName, principal.getName());
+    }
+
+    @GetMapping("/{name}")
+    public GameDto getGameByName(@PathVariable("name") String gameName) {
+        return gameApplicationService.getGame(gameName);
+    }
+
+    @GetMapping("/{username}")
+    public List<GameDto> getGameByUser(@PathVariable("username") String username) {
+        return gameApplicationService.getGameByUser(username);
+    }
+
+    @GetMapping
+    public List<GameDto> getAllGames() {
+        return gameApplicationService.getAllGames();
     }
 }
