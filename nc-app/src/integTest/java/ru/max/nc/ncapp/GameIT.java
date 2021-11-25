@@ -32,7 +32,7 @@ public class GameIT extends BaseIT {
     @DisplayName("User should be able to create a game with specific name if no game exists with this name")
     public void shouldCreateGame() throws Exception {
         //given
-        var gameDto = GameTestDataFactory.aNewGameDto().build();
+        var gameDto = GameTestDataFactory.aNewDefaultGameDto().build();
 
         //when
         ResultActions result = mockMvc.perform(post(GAME_API_PATH)

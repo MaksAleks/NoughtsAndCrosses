@@ -20,14 +20,21 @@ public class GameApplicationService {
     private final GameRepository gameRepository;
     private final GameConverter converter;
 
-    public GameDto createGame(GameDto game, String name) {
-        operationsValidator.validateCreation(game, name);
-        Game build = converter.convertFromDto(game)
-                .withCreatedBy(name);
-        Game saved = gameRepository.save(build);
-        return converter.convertToDto(saved);
+    public GameDto createGame(GameDto game, String username) {
+        operationsValidator.validateCreation(game, username);
+        return update(converter.convertFromDto(game)
+                        .withCreatedBy(username));
     }
 
+    public GameDto joinGame(String gameName, String username) {
+        Game game = gameRepository.getByNameOrThrow(gameName);
+        operationsValidator.validateJoin(game, username);
+        return update(game.withSecondPlayer(username));
+    }
+
+    private GameDto update(Game game) {
+        return converter.convertToDto(gameRepository.save(game));
+    }
 }
 
 

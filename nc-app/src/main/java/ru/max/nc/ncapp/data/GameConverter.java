@@ -9,6 +9,8 @@ public class GameConverter {
     public GameDto convertToDto(Game entity) {
         return GameDto.builder()
                 .id(entity.getId())
+                .status(entity.getStatus())
+                .secondPlayer(entity.getSecondPlayer())
                 .name(entity.getName())
                 .createdBy(entity.getCreatedBy())
                 .fieldSize(entity.getFieldSize())
@@ -18,6 +20,8 @@ public class GameConverter {
     public Game convertFromDto(GameDto dto) {
         return Game.builder()
                 .name(dto.getName())
+                .status(dto.getStatus())
+                .secondPlayer(dto.getSecondPlayer())
                 .fieldSize(dto.getFieldSize())
                 .createdBy(dto.getCreatedBy())
                 .id(dto.getId())

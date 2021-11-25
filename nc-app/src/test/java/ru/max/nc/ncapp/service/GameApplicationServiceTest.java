@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import ru.max.nc.ncapp.api.dto.GameDto;
 import ru.max.nc.ncapp.data.Game;
 import ru.max.nc.ncapp.data.GameConverter;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static ru.max.nc.ncapp.service.GameTestDataFactory.*;
@@ -24,7 +26,7 @@ class GameApplicationServiceTest {
     GameApplicationService gameApplicationService;
 
     GameOperationsValidator operationsValidator;
-    @Mock
+    @Spy
     GameConverter gameConverter;
     @Mock
     GameRepository gameRepository;
@@ -44,19 +46,15 @@ class GameApplicationServiceTest {
     @DisplayName("User should be able to create a game with specific name if no game exists with the same name")
     public void shouldCreateGame() {
         //given
-        var aNewGameDto = aNewGameDto().build();
-        var aNewGame = aNewGame().build();
+        var aNewGameDto = aNewDefaultGameDto().build();
+        var aNewGame = aNewDefaultGame().build();
         UUID generatedID = UUID.randomUUID();
         Game savedGame = aNewGame.withId(generatedID);
 
         when(gameRepository.findByName(DEFAULT_GAME_NAME))
                 .thenReturn(Optional.empty());
-        when(gameConverter.convertFromDto(aNewGameDto))
-                .thenReturn(aNewGame);
-        when(gameRepository.save(aNewGame))
+        when(gameRepository.save(eq(aNewGame)))
                 .thenReturn(savedGame);
-        when(gameConverter.convertToDto(savedGame))
-                .thenReturn(aNewGameDto.withId(generatedID));
 
         //when
         GameDto createdGame = gameApplicationService.createGame(aNewGameDto, DEFAULT_USER);
@@ -74,4 +72,35 @@ class GameApplicationServiceTest {
         });
     }
 
+    @Test
+    @DisplayName("User should be able to join an existing game if game is not started yet")
+    public void shouldJoinGame() {
+        //given
+        var newExistingGame = aNewDefaultGame()
+                .id(UUID.randomUUID())
+                .build();
+        String secondPlayer = "secondPlayer";
+        Game withSecondPlayer = newExistingGame.withSecondPlayer(secondPlayer);
+//        GameDto withSecondPlayerDto = aNewDefaultGameDto()p
+
+        when(gameRepository.getByNameOrThrow(DEFAULT_GAME_NAME))
+                .thenReturn(newExistingGame);
+        when(gameRepository.save(eq(withSecondPlayer)))
+                .thenReturn(withSecondPlayer);
+
+        //when
+        GameDto updatedGame = gameApplicationService.joinGame(DEFAULT_GAME_NAME, secondPlayer);
+
+        //then
+        assertThat(updatedGame).satisfies(created -> {
+            assertThat(created.getId())
+                    .isEqualTo(withSecondPlayer.getId());
+            assertThat(created.getName())
+                    .isEqualTo(withSecondPlayer.getName());
+            assertThat(created.getFieldSize())
+                    .isEqualTo(withSecondPlayer.getFieldSize());
+            assertThat(created.getCreatedBy())
+                    .isEqualTo(withSecondPlayer.getCreatedBy());
+        });
+    }
 }

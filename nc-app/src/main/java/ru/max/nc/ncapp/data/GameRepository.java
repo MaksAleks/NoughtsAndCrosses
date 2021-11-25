@@ -9,7 +9,9 @@ import java.util.UUID;
 public interface GameRepository extends JpaRepository<Game, UUID> {
     Optional<Game> findByName(String name);
 
-    default Game getByIdOrThrow(UUID id) {
-        return findById(id).orElseThrow(() -> new EntityNotFoundException("Game with id " + id + " not found"));
+    default Game getByNameOrThrow(String name) {
+        return findByName(name).orElseThrow(() -> new EntityNotFoundException(
+                String.format("Game %s not does not exist", name)
+        ));
     }
 }
