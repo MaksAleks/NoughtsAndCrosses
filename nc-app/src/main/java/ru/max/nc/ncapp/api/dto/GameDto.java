@@ -24,7 +24,6 @@ public class GameDto {
     @Schema(required = true, description = "Unique game name")
     String name;
 
-    @NotNull
     @Schema(description = "Name of the game creator")
     String createdBy;
 

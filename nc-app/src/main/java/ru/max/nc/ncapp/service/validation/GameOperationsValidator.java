@@ -36,6 +36,11 @@ public class GameOperationsValidator {
 
     public void validateJoin(Game game, String username) {
         validateGameStatus(game, NEW);
+        if (StringUtils.hasText(game.getSecondPlayer())) {
+            if (!game.getSecondPlayer().equals(username)) {
+                throw new IllegalStateException("Second player has already joined the game");
+            }
+        }
     }
 
     public void validateStart(Game game, String username) {

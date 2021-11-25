@@ -5,6 +5,7 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.UUID;
 
 import static ru.max.nc.ncapp.api.dto.GameDto.Status;
@@ -17,7 +18,7 @@ import static ru.max.nc.ncapp.api.dto.GameDto.Status;
 @With
 @Builder(toBuilder = true)
 @Table(name = "game")
-public class Game  {
+public class Game implements Serializable {
 
     @Id
     @NotNull

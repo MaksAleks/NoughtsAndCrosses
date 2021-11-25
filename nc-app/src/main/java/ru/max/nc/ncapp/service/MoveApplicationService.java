@@ -47,6 +47,7 @@ public class MoveApplicationService {
         Game game = gameRepository.getByNameOrThrow(gameName);
         return moveRepository.findByGame(game).stream()
                 .map(moveConverter::convertToDto)
+                .peek(dto -> dto.withGameName(gameName))
                 .collect(Collectors.toList());
     }
 }

@@ -38,8 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.formLogin();
         httpSecurity.authorizeRequests()
-                .antMatchers("/register", "/swagger-ui.html").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/game/**", "/move/**")
+                .authenticated()
+                .anyRequest()
+                .permitAll();
         httpSecurity.csrf().disable();
     }
 }

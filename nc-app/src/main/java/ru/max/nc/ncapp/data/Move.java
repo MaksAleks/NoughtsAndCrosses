@@ -2,9 +2,11 @@ package ru.max.nc.ncapp.data;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -16,7 +18,8 @@ import java.util.UUID;
 @With
 @Builder(toBuilder = true)
 @Table(name = "move")
-public class Move {
+@EntityListeners(AuditingEntityListener.class)
+public class Move implements Serializable {
 
     @Id
     @NotNull

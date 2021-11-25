@@ -19,7 +19,6 @@ public class MoveConverter {
                 .xPos(move.getPosX())
                 .yPos(move.getPosY())
                 .userName(move.getUserName())
-                .gameName(move.getGame().getName())
                 .build();
     }
 }
