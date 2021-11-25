@@ -1,5 +1,6 @@
 package ru.max.nc.ncapp.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class MoveApi {
 
     private final MoveApplicationService moveApplicationService;
 
+    @Operation(summary = "Make a move. First move is made by creator.")
     @PostMapping
     public void makeAMove(@Valid @RequestBody MoveDto moveDto, Principal principal) {
         moveApplicationService.makeAMove(moveDto, principal.getName());

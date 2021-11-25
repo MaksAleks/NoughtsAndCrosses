@@ -26,11 +26,13 @@ public class GameApi {
         return gameApplicationService.createGame(game, principal.getName());
     }
 
+    @Operation(summary = "Join to game endpoint. Used to join a user to the game")
     @PostMapping("/join/{name}")
     public GameDto joinGame(@PathVariable("name") String gameName, Principal principal) {
         return gameApplicationService.joinGame(gameName, principal.getName());
     }
 
+    @Operation(summary = "Start game endpoint. Only creator can start a game. Game can be started only after second player joined it")
     @PostMapping("/start/{name}")
     public GameDto startGame(@PathVariable("name") String gameName, Principal principal) {
         return gameApplicationService.startGame(gameName, principal.getName());
