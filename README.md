@@ -44,6 +44,8 @@
 
 После запуска будет доступен [swagger-ui](http://localhost:8080/swagger-ui.html) с описанием API
 
+Все ссылки ниже будут рабочие только после запуска приложения и ведут к endpoint-ам на [http://localhost:8080/swagger-ui.html/*](http://localhost:8080/swagger-ui.html)
+
 Для начала зарегистрируем пользователя через endpoint [/register](http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/register-api/login)
 Нажимаем на кнопочку [**Try it out**] в правом верхнем углу и в теле запроса вводим имя и пароль:
 
